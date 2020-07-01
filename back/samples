@@ -1,0 +1,51 @@
+1. como organizar el app.py
+2. como hacer un archivo unico con claves en un .gitignore
+3. como setiar mysql
+4. hacer funcionar este JSON
+
+[
+    {
+        id: generico
+        password: string
+        name: string
+        lastname: string
+        email: string
+        avatar: archivo
+        phone: string
+        coordenadas: string
+        documento: string (RUT)
+        birthdate: string
+        createdate: funcion now()
+        role    {
+            rolename: string (predefinido)
+        }
+        ticket  {
+                    numpago: integer
+                    asistencia: boolean
+                    fechacompra: string
+                    fechapago: string
+                    categoria {
+                        tipo: string (staff, cliente, invitacion)
+                    }
+                    codigo{
+                        sku: integer (codigo de barra con la codificacion del tipo de entrada del tipo AABBCCDDEEFF, donde AA=evento, BB=dias de evento, CC=??, DD=??, EE=??, FF=??)
+                    }
+        }
+        emergencia {
+            gruposangre: string
+            alergia: string
+            enfermedadbase: string
+            contactouno: string
+            contactodos: string
+            telcontuno: string
+            telcontdos: string
+            clinica: string
+            medicamentos {
+                remedio1: string
+                remedio2: string
+                ...
+                remedioN: string
+            }
+        }
+    }
+]

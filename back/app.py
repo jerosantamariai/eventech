@@ -3,11 +3,11 @@ from flask import Flask, jsonify, request, render_template, send_from_directory
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from flask_bcrypt import Bcrypt
+from models import db, Roles, User, Ticket, Emergencia
+from functions import allowed_file
 from flask_cors import CORS
-from models import db, Roles, Users, Ticket
 from flask_mail import Mail, Message
 from werkzeug.utils import secure_filename
-from functions import allowed_file
 from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
     get_jwt_identity
@@ -18,7 +18,7 @@ ALLOWED_EXTENSIONS_IMAGES = {'png', 'jpg', 'jpeg', 'gif', 'svg'}
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
-app.config['DEBUG '] = True
+app.config['DEBUG'] = True
 app.config['ENV'] = 'development'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password@localhost:3306/db'
@@ -45,6 +45,22 @@ manager.add_command("db", MigrateCommand)
 def root():
     return render_template('index.html')
 
+@app.route('/users', methods=['GET', 'POST'])
+@app.route('/users/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+#@jwt_required
+def users(id = None):
+    if request.method == 'GET':
+        if id is not None:
+            user = User.query.get(id)
+            if user:                  
+                return jsonify(user.serialize()), 200
+            else:                        
+                return jsonify({"msg": "Not Found"}), 404 
+        else:                                                              
+            users = User.query.all()              
+            users = list(map(lambda user: user.serialize(), users)) 
+            return jsonify(users), 200
+
 # BASE DE METODOS PARA TRABAJAR
 
 # @app.route('/todo', methods=['GET', 'POST'])
@@ -61,25 +77,25 @@ def root():
 #         else:                                                              
 #             todos = Todos.query.all()              
 #             todos = list(map(lambda todo: todo.serialize(), todos)) 
-#             return jsonify(todos), 200                              
+#             return jsonify(todos), 200
 
-#     if request.method == 'POST':                                    
-#         tramite = request.json.get('tramite', None)                 
-#         tareas = request.json.get('tareas', None)                   
+    if request.method == 'POST':                                    
+        tramite = request.json.get('tramite', None)                 
+        tareas = request.json.get('tareas', None)                   
 
-#         if not tramite and tramite == "":                           
-#             return jsonify({"msg": "Ingresar Tramite"}), 400        
-#         elif not tareas and tareas == "":                           
-#             return jsonify({"msg": "Ingresar Tareas"}), 400         
+        if not tramite and tramite == "":                           
+            return jsonify({"msg": "Ingresar Tramite"}), 400        
+        elif not tareas and tareas == "":                           
+            return jsonify({"msg": "Ingresar Tareas"}), 400         
 
-#         tramites = Todos()                                          
-#         tramites.tramite = tramite                                  
-#         tramites.tareas = tareas                                    
+        tramites = Todos()                                          
+        tramites.tramite = tramite                                  
+        tramites.tareas = tareas                                    
 
-#         db.session.add(tramites)                                    
-#         db.session.commit()                                         
+        db.session.add(tramites)                                    
+        db.session.commit()                                         
 
-#         return jsonify(tramites.serialize()), 200                   
+        return jsonify(tramites.serialize()), 200                   
 
 #     if request.method == 'PUT':                                     
 #         tramite = request.json.get("tramite", None)
@@ -163,13 +179,95 @@ def loadroles():
     print("Roles creados")
 
 @manager.command
-def loadadmin():
-    users = Users()
-    users.email = "admin@eventech.cl"
-    users.password = bcrypt.generate_password_hash("123456")        #Its obviously the first change that I make into my webpage is to change this password of my account
-    users.role_id = "1"
+def loadtickets():
+    ticket = Ticket()
+    ticket.id = "1"
+    ticket.user_id = 1
 
-    db.session.add(users)
+    db.session.add(ticket)
+    db.session.commit()
+
+    ticket = Ticket()
+    ticket.id = "2"
+
+    db.session.add(ticket)
+    db.session.commit()
+
+    ticket = Ticket()
+    ticket.id = "3"
+
+    db.session.add(ticket)
+    db.session.commit()
+
+    ticket = Ticket()
+    ticket.id = "4"
+
+    db.session.add(ticket)
+    db.session.commit()
+
+    ticket = Ticket()
+    ticket.id = "5"
+
+    db.session.add(ticket)
+    db.session.commit()
+
+    ticket = Ticket()
+    ticket.id = "6"
+
+    db.session.add(ticket)
+    db.session.commit()
+
+    ticket = Ticket()
+    ticket.id = "7"
+
+    db.session.add(ticket)
+    db.session.commit()
+
+    ticket = Ticket()
+    ticket.id = "8"
+
+    db.session.add(ticket)
+    db.session.commit()
+
+    ticket = Ticket()
+    ticket.id = "9"
+
+    db.session.add(ticket)
+    db.session.commit()
+
+    ticket = Ticket()
+    ticket.id = "10"
+
+    db.session.add(ticket)
+    db.session.commit()
+
+    print("Tickets creados")
+
+@manager.command
+def loademergencia():
+    emergencia = Emergencia()
+    emergencia.id = "1"
+    emergencia.user_id = 1
+
+    db.session.add(emergencia)
+    db.session.commit()
+
+@manager.command
+def loadadmin():
+    user = User()
+    user.email = "admin@eventech.cl"
+    user.password = bcrypt.generate_password_hash("123456")        #Its obviously the first change that I make into my webpage is to change this password of my account
+    user.role_id = "1"
+
+    db.session.add(user)
+    db.session.commit()
+
+    user = User()
+    user.email = "admin2@eventech.cl"
+    user.password = bcrypt.generate_password_hash("123456")        #Its obviously the first change that I make into my webpage is to change this password of my account
+    user.role_id = "2"
+
+    db.session.add(user)
     db.session.commit()
 
     print("Administrador Creado! Buena suerte!")
