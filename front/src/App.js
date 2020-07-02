@@ -6,6 +6,7 @@ import Home from './views/home';
 import NotFound from './views/notfound';
 import Register from './views/register';
 import Login from './views/login';
+import Dashboard from './views/dashboard';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <BrowserRouter>
       <Navbar />
         <Switch>
+          <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/" component={Home} />
