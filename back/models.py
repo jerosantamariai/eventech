@@ -9,6 +9,7 @@ class Roles (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     rolename = db.Column(db.String(50), unique=True, nullable=False)
     users = db.relationship("User", backref="role", cascade="all, delete")
+    
     def serialize(self):
         return {
             "id": self.id,
@@ -32,11 +33,11 @@ class User (db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey("roles.id"))
     events = db.relationship("Evento", backref="user",  cascade="all, delete" )
     emergencia = db.relationship("Emergencia", back_populates="user") 
+    
     def serialize(self):
         eventos= []
         events = list(map(lambda event: event.serialize(), self.events)),
         emergencia = list(map(lambda emergencia: emergencia.serialize(), self.emergencia))
-        print ( "para bailar la bamba" , emergencia)
         return {
             "id": self.id,
             "name": self.name,
@@ -47,8 +48,8 @@ class User (db.Model):
             "documento": self.documento,
             "createdate": self.createdate,
             "role": self.role.serialize(),
-            "events":events,
-            "emergencia":emergencia
+            "events": events,
+            "emergencia": emergencia
         }
 
 class Emergencia (db.Model):
@@ -61,6 +62,7 @@ class Emergencia (db.Model):
     medicamentos = db.Column(db.String(100), nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship("User", back_populates="emergencia")
+    
     def serialize(self):
         return {
             "id": self.id,
@@ -76,16 +78,21 @@ class Evento (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     eventname = db.Column(db.String(100), nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    ticket = db.relationship("Ticket", back_populates="evento") 
+    
     def serialize(self):
+        ticket = list(map(lambda ticke: ticke.serialize(), self.ticket))
         return {
             "id": self.id,
             "eventname": self.eventname,
+            "ticket": ticket
         }
 
 class Categoria (db.Model):
     __tablename__ = 'categoria'
     id = db.Column(db.Integer, primary_key=True)
     catname = db.Column(db.Integer, nullable=True)
+    
     def serialize(self):
         return {
             "id": self.id,
@@ -97,6 +104,9 @@ class Codigo (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sku = db.Column(db.Integer, nullable=True)
     qrcode = db.Column(db.String(100), nullable=True)
+    ticket_id = db.Column(db.Integer, db.ForeignKey('ticket.id'))
+    ticket = db.relationship("Ticket", back_populates="codigo")
+    
     def serialize(self):
         return {
             "id": self.id,
@@ -111,15 +121,19 @@ class Ticket (db.Model):
     asistencia = db.Column(db.Boolean, nullable=True, default=False)
     fechacompra = db.Column(db.String(10), nullable=True)
     fechapago = db.Column(db.String(10), nullable=True)
+    evento_id = db.Column(db.Integer, db.ForeignKey('evento.id'))
+    evento = db.relationship("Evento", back_populates="ticket")
+    codigo = db.relationship("Codigo", back_populates="ticket") 
+    
     def serialize(self):
+        codigo = list(map(lambda cod: cod.serialize(), self.codigo))
         return {
             "id": self.id,
             "numpago": self.numpago,
             "asistencia": self.asistencia,
             "fechacompra": self.fechacompra,
             "fechapago": self.fechapago,
-            "categoria": self.categoria,
-            "codigo": self.codigo,
+            "codigo": codigo,
         }
 
 class Contacto (db.Model):

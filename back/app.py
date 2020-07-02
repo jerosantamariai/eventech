@@ -3,7 +3,7 @@ from flask import Flask, jsonify, request, render_template, send_from_directory
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from flask_bcrypt import Bcrypt
-from models import db, Roles, User, Ticket, Emergencia
+from models import db, Roles, User, Ticket, Emergencia, Evento, Codigo, Categoria
 from functions import allowed_file
 from flask_cors import CORS
 from flask_mail import Mail, Message
@@ -119,79 +119,136 @@ def loadroles():
     role.rolename = "admin"
     db.session.add(role)
     db.session.commit()
+
     role = Roles()
     role.rolename = "finanzas"
     db.session.add(role)
     db.session.commit()
+
     role = Roles()
     role.rolename = "comercial"
     db.session.add(role)
     db.session.commit()
+
     role = Roles()  
     role.rolename = "staff general"
     db.session.add(role)
     db.session.commit()
+
     role = Roles()  
     role.rolename = "alimentacion"
     db.session.add(role)
     db.session.commit()
+
     role = Roles()
     role.rolename = "seguridad"
     db.session.add(role)
     db.session.commit()
+
     role = Roles()
     role.rolename = "protagonista"
     db.session.add(role)
     db.session.commit()
+
     role = Roles()
     role.rolename = "cliente"
     db.session.add(role)
     db.session.commit()
+
     print("Roles creados")
+
+@manager.command
+def loadcategories():
+    categoria = Categoria()
+    categoria.catname = "coordinacion"
+    db.session.add(categoria)
+    db.session.commit()
+
+    categoria = Categoria()
+    categoria.catname = "staff"
+    db.session.add(categoria)
+    db.session.commit()
+
+    categoria = Categoria()
+    categoria.catname = "vip"
+    db.session.add(categoria)
+    db.session.commit()
+
+    categoria = Categoria()
+    categoria.catname = "cliente"
+    db.session.add(categoria)
+    db.session.commit()
+
+    categoria = Categoria()
+    categoria.catname = "cortesia"
+    db.session.add(categoria)
+    db.session.commit()
+
+    print("Categorias creadas!")
+
+@manager.command
+def loadevent():
+    evento = Evento()
+    evento.eventname = "lollapalooza"
+    evento.user_id = "1"
+    db.session.add(evento)
+    db.session.commit()
+
+    print("Evento Creado!")
 
 @manager.command
 def loadtickets():
     ticket = Ticket()
     ticket.id = "1"
-    ticket.user_id = 1
+    ticket.evento_id = 1
     db.session.add(ticket)
     db.session.commit()
+
     ticket = Ticket()
     ticket.id = "2"
     db.session.add(ticket)
     db.session.commit()
+
     ticket = Ticket()
     ticket.id = "3"
     db.session.add(ticket)
     db.session.commit()
+
     ticket = Ticket()
     ticket.id = "4"
     db.session.add(ticket)
     db.session.commit()
+
     ticket = Ticket()
     ticket.id = "5"
     db.session.add(ticket)
     db.session.commit()
+
     ticket = Ticket()
     ticket.id = "6"
     db.session.add(ticket)
     db.session.commit()
+
     ticket = Ticket()
     ticket.id = "7"
     db.session.add(ticket)
     db.session.commit()
+
     ticket = Ticket()
     ticket.id = "8"
     db.session.add(ticket)
     db.session.commit()
+
     ticket = Ticket()
     ticket.id = "9"
     db.session.add(ticket)
     db.session.commit()
+
     ticket = Ticket()
     ticket.id = "10"
     db.session.add(ticket)
     db.session.commit()
+
     print("Tickets creados")
 
 @manager.command
@@ -204,19 +261,34 @@ def loademergencia():
     print("Emergencia creada!")
 
 @manager.command
+def loadcodes():
+    codigo = Codigo()
+    codigo.sku = "123456"
+    codigo.qrcode = "qrsample"
+    codigo.ticket_id = 1
+    db.session.add(codigo)
+    db.session.commit()
+
+    print("Codigos Creado!")
+
+@manager.command
 def loadadmin():
     user = User()
     user.email = "admin@eventech.cl"
     user.password = bcrypt.generate_password_hash("123456")        #Its obviously the first change that I make into my webpage is to change this password of my account
     user.role_id = "1"
+    user.evento = "1"
     db.session.add(user)
     db.session.commit()
+
     user = User()
     user.email = "admin2@eventech.cl"
     user.password = bcrypt.generate_password_hash("123456")        #Its obviously the first change that I make into my webpage is to change this password of my account
     user.role_id = "2"
+    user.evento = "1"
     db.session.add(user)
     db.session.commit()
+
     print("Administrador Creado! Buena suerte!")
 
 if __name__ == '__main__':
