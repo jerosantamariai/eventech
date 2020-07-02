@@ -11,7 +11,7 @@ const Navbar = props => {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto">
                     <li className="nav-item active">
-                        <Link className="nav-link" to="/quienes-somos">Quienes Somos<span className="sr-only">(current)</span></Link>
+                        <Link className="nav-link" to="/quienessomos">Quienes Somos<span className="sr-only">(current)</span></Link>
                     </li>
                     <li className="nav-item">
                         <Link className="nav-link" to="/info">Info</Link>

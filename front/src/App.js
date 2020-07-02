@@ -7,6 +7,7 @@ import NotFound from './views/notfound';
 import Register from './views/register';
 import Login from './views/login';
 import Dashboard from './views/dashboard';
+import QuienesSomos from './views/quienessomos';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
+          <Route exact path="/quienessomos" component={QuienesSomos} />
           <Route exact path="/" component={Home} />
           <Route component={NotFound} />
         </Switch>
