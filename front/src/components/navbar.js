@@ -22,7 +22,7 @@ const Navbar = props => {
                 </ul>
                 <ul className="navbar-nav">
                     <li>
-                        <Link className="nav-link" to="Register">Register</Link>
+                        <Link className="nav-link" to="/register">Register</Link>
                     </li>
                     <li className="nav-item dropdown">
                         <Link className="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

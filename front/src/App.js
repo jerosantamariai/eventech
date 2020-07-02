@@ -4,6 +4,7 @@ import injectContext from './store/appContext';
 import Navbar from '../src/components/navbar';
 import Home from './views/home';
 import NotFound from './views/notfound';
+import Register from './views/register';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <BrowserRouter>
       <Navbar />
         <Switch>
+          <Route exact path="/register" component={Register} />
           <Route exact path="/" component={Home} />
           <Route component={NotFound} />
         </Switch>
