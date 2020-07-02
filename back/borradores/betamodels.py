@@ -137,3 +137,45 @@ class Emergencia (db.Model):
             "clinica": self.clinica,
             "medicamentos": self.medicamentos,
         }
+
+# ONE TO ONE
+
+class Parent(Base):
+    __tablename__ = 'parent'
+    id = Column(Integer, primary_key=True)
+    child_id = Column(Integer, ForeignKey('child.id'))
+    child = relationship("Child", back_populates="parent")
+
+class Child(Base):
+    __tablename__ = 'child'
+    id = Column(Integer, primary_key=True)
+    parent = relationship("Parent", back_populates="child", uselist=False)
+
+# ONE TO MANY
+
+class Parent(Base):
+    __tablename__ = 'parent'
+    id = Column(Integer, primary_key=True)
+    children = relationship("Child", back_populates="parent")
+
+class Child(Base):
+    __tablename__ = 'child'
+    id = Column(Integer, primary_key=True)
+    parent_id = Column(Integer, ForeignKey('parent.id'))
+    parent = relationship("Parent", back_populates="children")
+
+# MANY TO ONE
+
+class Parent(Base):
+    __tablename__ = 'parent'
+    id = Column(Integer, primary_key=True)
+    child_id = Column(Integer, ForeignKey('child.id'))
+    child = relationship("Child", back_populates="parents")
+
+class Child(Base):
+    __tablename__ = 'child'
+    id = Column(Integer, primary_key=True)
+    parents = relationship("Parent", back_populates="child")
+
+# MANY TO MANY
+
