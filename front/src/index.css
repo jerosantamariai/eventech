@@ -31,6 +31,35 @@ code {
   position: unset;
 }
 
+.infosteiner,
+.preciosteiner,
+.loginsteiner,
+.registeiner,
+.requestPassw{
+  margin-top: 60px;
+}
+
+
+/* LOGIN */
+#container-login{
+  padding-top: 1%;
+  width: 35%;
+  border: none;
+  background: none;
+}
+
+#container-login h1{
+  padding-bottom: 3%;
+}
+
+/* REQUEST PASSW */
+#container-requestPass{
+  padding-top: 1%;
+  width: 35%;
+  border: none;
+  background: none;
+}
+
 /* Footer */
 footer{
   background: rgb(52, 53, 52);
