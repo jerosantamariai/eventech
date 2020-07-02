@@ -22,25 +22,13 @@ class User (db.Model):
     email = db.Column(db.String(100), nullable=False)
     avatar = db.Column(db.String(100), nullable=True, default='defaultavatar.jpg')
     phone = db.Column(db.String(12), nullable=True)
-    coordenadas = db.Column(db.String(50), nullable=True)
+    posx = db.Column(db.String(50), nullable=True)
+    posy = db.Column(db.String(50), nullable=True)
     documento = db.Column(db.String(20), nullable=True)
     birthdate = db.Column(db.String(15), nullable=True)
     createdate = db.Column(db.DateTime, default=datetime.now())
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable=False)
-    role = db.relationship(Roles)
-    ticket = db.relationship("Ticket", uselist=False, back_populates="user")
-    emergencia = db.relationship("Emergencia", uselist=False, back_populates="user")
-    # ticket_id = db.Column(db.Integer, db.ForeignKey('ticket.id'), nullable=False)
-    # ticket = db.relationship("Ticket", backref="users")
-    # emergencia_id = db.Column(db.Integer, db.ForeignKey('emergencia.id'), nullable=False)
-    # emergencia = db.relationship(Emergencia)
 
     def serialize(self):
-        # ticket = []
-        # ticket = list(map(lambda ticke: ticke.serialize(), self.ticket))
-
-        # emergencia = []
-        # emergencia = list(map(lambda emergenci: emergenci.serialize(), self.emergencia))
         return {
             "id": self.id,
             "name": self.name,
@@ -51,10 +39,30 @@ class User (db.Model):
             "coordenadas": self.coordenadas,
             "documento": self.documento,
             "createdate": self.createdate,
-            "role": self.role.serialize(),
-            # "ticket": self.ticket.serialize(),
-            # "emergencia": self.emergencia.serialize(),
-            # "emergencia": self.emergencia.serialize(),
+        }
+
+class Categoria (db.Model):
+    __tablename__ = 'categoria'
+    id = db.Column(db.Integer, primary_key=True)
+    catname = db.Column(db.Integer(100), nullable=True)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "catname": self.catname,
+        }
+
+class Codigo (db.Model):
+    __tablename__ = 'codigo'
+    id = db.Column(db.Integer, primary_key=True)
+    sku = db.Column(db.Integer(100), nullable=True)
+    qrcode = db.Column(db.String(100), nullable=True)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "sku": self.sku,
+            "qrcode": self.qrcode,
         }
 
 class Ticket (db.Model):
@@ -64,10 +72,6 @@ class Ticket (db.Model):
     asistencia = db.Column(db.Boolean, nullable=True, default=False)
     fechacompra = db.Column(db.String(10), nullable=True)
     fechapago = db.Column(db.String(10), nullable=True)
-    categoria = db.Column(db.String(50), nullable=True)
-    codigo = db.Column(db.String(100), nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship("User", back_populates="ticket")
 
     def serialize(self):
         return {
@@ -80,20 +84,49 @@ class Ticket (db.Model):
             "codigo": self.codigo,
         }
 
+class Evento (db.Model):
+    __tablename__ = 'evento'
+    id = db.Column(db.Integer, primary_key=True)
+    eventname = db.Column(db.String(100), nullable=True)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "eventname": self.eventname,
+        }
+
+class Contacto (db.Model):
+    __tablename__ = 'contacto'
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(100), nullable=True)
+    phone = db.Column(db.String(100), nullable=True)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "nombre": self.nombre,
+            "phone": self.phone,
+        }
+
+class Medicamentos (db.Model):
+    __tablename__ = 'medicamentos'
+    id = db.Column(db.Integer, primary_key=True)
+    remedio = db.Column(db.String(100), nullable=True)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "remedio": self.remedio,
+        }
+
 class Emergencia (db.Model):
     __tablename__ = 'emergencia'
     id = db.Column(db.Integer, primary_key=True)
     gruposangre = db.Column(db.String(15), nullable=True)
     alergia = db.Column(db.String(100), nullable=True)
     enfermedadbase = db.Column(db.String(100), nullable=True)
-    contactouno = db.Column(db.String(20), nullable=True)
-    contactodos = db.Column(db.String(20), nullable=True)
-    telcontuno = db.Column(db.String(20), nullable=True)
-    telcontdos = db.Column(db.String(20), nullable=True)
     clinica = db.Column(db.String(100), nullable=True)
     medicamentos = db.Column(db.String(100), nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship("User", back_populates="emergencia")
 
     def serialize(self):
         return {
@@ -101,32 +134,6 @@ class Emergencia (db.Model):
             "gruposangre": self.gruposangre,
             "alergia": self.alergia,
             "enfermedadbase": self.enfermedadbase,
-            "contactouno": self.contactouno,
-            "contactodos": self.contactodos,
-            "telcontuno": self.telcontuno,
-            "telcontdos": self.telcontdos,
             "clinica": self.clinica,
             "medicamentos": self.medicamentos,
         }
-
-# class Ticket (db.Model):
-#     __tablename__ = 'ticket'
-#     id = db.Column(db.Integer, primary_key=True)
-#     numpago = db.Column(db.String(100), nullable=True)
-#     asistencia = db.Column(db.Boolean, nullable=True, default='0')
-#     fechacompra = db.Column(db.String(10), nullable=True)
-#     fechapago = db.Column(db.String(10), nullable=True)
-#     categoria = db.Column(db.String(50), nullable=True)
-#     codigo = db.Column(db.String(100), nullable=True)
-
-#     def serialize(self):
-        # return {
-        #     "id": self.id,
-        #     "numpago": self.numpago,
-        #     "asistencia": self.asistencia,
-        #     "fechacompra": self.fechacompra,
-        #     "fechapago": self.fechapago,
-        #     "categoria": self.categoria,
-        #     "codigo": self.codigo,
-        # }
-

@@ -57,8 +57,8 @@ def users(id = None):
             else:                        
                 return jsonify({"msg": "Not Found"}), 404 
         else:                                                              
-            users = User.query.all()              
-            users = list(map(lambda user: user.serialize(), users)) 
+            user = User.query.all()              
+            user = list(map(lambda use: use.serialize(), user)) 
             return jsonify(users), 200
 
 # BASE DE METODOS PARA TRABAJAR
@@ -79,23 +79,23 @@ def users(id = None):
 #             todos = list(map(lambda todo: todo.serialize(), todos)) 
 #             return jsonify(todos), 200
 
-    if request.method == 'POST':                                    
-        tramite = request.json.get('tramite', None)                 
-        tareas = request.json.get('tareas', None)                   
+    # if request.method == 'POST':                                    
+    #     tramite = request.json.get('tramite', None)                 
+    #     tareas = request.json.get('tareas', None)                   
 
-        if not tramite and tramite == "":                           
-            return jsonify({"msg": "Ingresar Tramite"}), 400        
-        elif not tareas and tareas == "":                           
-            return jsonify({"msg": "Ingresar Tareas"}), 400         
+    #     if not tramite and tramite == "":                           
+    #         return jsonify({"msg": "Ingresar Tramite"}), 400        
+    #     elif not tareas and tareas == "":                           
+    #         return jsonify({"msg": "Ingresar Tareas"}), 400         
 
-        tramites = Todos()                                          
-        tramites.tramite = tramite                                  
-        tramites.tareas = tareas                                    
+    #     tramites = Todos()                                          
+    #     tramites.tramite = tramite                                  
+    #     tramites.tareas = tareas                                    
 
-        db.session.add(tramites)                                    
-        db.session.commit()                                         
+    #     db.session.add(tramites)                                    
+    #     db.session.commit()                                         
 
-        return jsonify(tramites.serialize()), 200                   
+    #     return jsonify(tramites.serialize()), 200                   
 
 #     if request.method == 'PUT':                                     
 #         tramite = request.json.get("tramite", None)
@@ -251,6 +251,8 @@ def loademergencia():
 
     db.session.add(emergencia)
     db.session.commit()
+
+    print("Emergencia creada!")
 
 @manager.command
 def loadadmin():
