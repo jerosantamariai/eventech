@@ -10,6 +10,7 @@ import Dashboard from './views/dashboard';
 import QuienesSomos from './views/quienessomos';
 import Info from './views/info';
 import Precios from './views/precios';
+import RequestPassword from './views/requestPassword';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route exact path="/precios" component={Precios} />
           <Route exact path="/info" component={Info} />
           <Route exact path="/quienesSomos" component={QuienesSomos} />
+          <Route exact path="/request_password" component={RequestPassword}/>
           <Route exact path="/" component={Home} />
           <Route component={NotFound} />
         </Switch>
