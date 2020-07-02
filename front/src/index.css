@@ -5,9 +5,84 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  width: 98.9%;
+  background-color: rgb(211, 235, 247) !important;
 }
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Navbar */
+#navbar{
+  width: 98.9%;
+  margin-left: 0.5%;
+}
+
+/* Home */
+#banner{
+  margin-top: 76px;
+  width: 75%;
+  margin-left: 14%;
+}
+#carrusel-home img{
+  height: 400px;
+  overflow: auto;
+  position: unset;
+}
+
+/* Footer */
+footer{
+  background: rgb(52, 53, 52);
+  padding: 8px;
+  margin-left: 0.8% ;
+  color: #eee;
+  display: flex;
+  
+}
+footer a{
+  color: white;
+}
+footer #left-footer{
+  flex: 1;
+  border-right: 1px solid white;
+  text-align: center ;
+  margin-top: 10px;
+}
+footer #left-footer ul{
+  padding: 0;
+  list-style: none;
+  line-height: 1.5;
+}
+footer #right-footer{
+  flex: 2;
+  margin-top: 10px;
+  text-align: center;
+}
+footer #social-media-footer a .fa-facebook,
+footer #social-media-footer a .fa-linkedin,
+footer #social-media-footer a .fa-github {
+  color: white;
+  transition: 0.4s;
+}
+footer #social-media-footer ul{
+  display: flex;
+  list-style: none;
+  justify-content: center;
+  padding: 0;
+}
+footer #social-media-footer ul li{
+  font-size: 48px;
+  padding: 16px;
+  transition: 0.4s;
+}
+footer #social-media-footer ul li:hover a .fa-facebook{
+color: #3b5998;
+}
+footer #social-media-footer ul li:hover a .fa-linkedin{
+color: rgb(40, 105, 226);
+}
+footer #social-media-footer ul li:hover a .fa-github{
+color: #bbb;
+}
+
