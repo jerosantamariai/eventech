@@ -62,6 +62,7 @@ class Emergencia (db.Model):
     medicamentos = db.Column(db.String(100), nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship("User", back_populates="emergencia")
+    contactos = db.relationship("Contacto", backref="emergenci", cascade="all, delete")
     
     def serialize(self):
         return {
@@ -72,7 +73,7 @@ class Emergencia (db.Model):
             "clinica": self.clinica,
             "medicamentos": self.medicamentos,
         }
-
+        
 class Evento (db.Model):
     __tablename__ = 'evento'
     id = db.Column(db.Integer, primary_key=True)
@@ -92,6 +93,7 @@ class Categoria (db.Model):
     __tablename__ = 'categoria'
     id = db.Column(db.Integer, primary_key=True)
     catname = db.Column(db.Integer, nullable=True)
+    tickets = db.relationship("Ticket", backref="categoria", cascade="all, delete")
     
     def serialize(self):
         return {
@@ -123,7 +125,8 @@ class Ticket (db.Model):
     fechapago = db.Column(db.String(10), nullable=True)
     evento_id = db.Column(db.Integer, db.ForeignKey('evento.id'))
     evento = db.relationship("Evento", back_populates="ticket")
-    codigo = db.relationship("Codigo", back_populates="ticket") 
+    codigo = db.relationship("Codigo", back_populates="ticket")
+    categoria_id = db.Column(db.Integer, db.ForeignKey("categoria.id"))
     
     def serialize(self):
         codigo = list(map(lambda cod: cod.serialize(), self.codigo))
@@ -134,6 +137,7 @@ class Ticket (db.Model):
             "fechacompra": self.fechacompra,
             "fechapago": self.fechapago,
             "codigo": codigo,
+            "categoria": self.categoria.serialize(),
         }
 
 class Contacto (db.Model):
@@ -141,11 +145,14 @@ class Contacto (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(100), nullable=True)
     phone = db.Column(db.String(100), nullable=True)
+    emergenci_id = db.Column(db.Integer, db.ForeignKey("emergencia.id"))
+
     def serialize(self):
         return {
             "id": self.id,
             "nombre": self.nombre,
             "phone": self.phone,
+            "emergencia": self.emergencia.serialize(),
         }
 
 class Medicamentos (db.Model):
