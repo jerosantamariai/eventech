@@ -3,7 +3,7 @@ from flask import Flask, jsonify, request, render_template, send_from_directory
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from flask_bcrypt import Bcrypt
-from models import db, Roles, User, Ticket, Emergencia, Evento, Codigo, Categoria
+from models import db, Roles, User, Ticket, Emergencia, Evento, Codigo, Categoria, Contacto
 from functions import allowed_file
 from flask_cors import CORS
 from flask_mail import Mail, Message
@@ -78,19 +78,19 @@ def users(id = None):
 #             todos = Todos.query.all()              
 #             todos = list(map(lambda todo: todo.serialize(), todos)) 
 #             return jsonify(todos), 200
-    # if request.method == 'POST':                                    
-    #     tramite = request.json.get('tramite', None)                 
-    #     tareas = request.json.get('tareas', None)                   
-    #     if not tramite and tramite == "":                           
-    #         return jsonify({"msg": "Ingresar Tramite"}), 400        
-    #     elif not tareas and tareas == "":                           
-    #         return jsonify({"msg": "Ingresar Tareas"}), 400         
-    #     tramites = Todos()                                          
-    #     tramites.tramite = tramite                                  
-    #     tramites.tareas = tareas                                    
-    #     db.session.add(tramites)                                    
-    #     db.session.commit()                                         
-    #     return jsonify(tramites.serialize()), 200                   
+#     if request.method == 'POST':                                    
+#         tramite = request.json.get('tramite', None)                 
+#         tareas = request.json.get('tareas', None)                   
+#         if not tramite and tramite == "":                           
+#             return jsonify({"msg": "Ingresar Tramite"}), 400        
+#         elif not tareas and tareas == "":                           
+#             return jsonify({"msg": "Ingresar Tareas"}), 400         
+#         tramites = Todos()                                          
+#         tramites.tramite = tramite                                  
+#         tramites.tareas = tareas                                    
+#         db.session.add(tramites)                                    
+#         db.session.commit()                                         
+#         return jsonify(tramites.serialize()), 200                   
 #     if request.method == 'PUT':                                     
 #         tramite = request.json.get("tramite", None)
 #         tareas = request.json.get("tareas", None)
@@ -201,6 +201,7 @@ def loadtickets():
     ticket = Ticket()
     ticket.id = "1"
     ticket.evento_id = 1
+    ticket.categoria_id = 1
     db.session.add(ticket)
     db.session.commit()
 
@@ -256,6 +257,7 @@ def loademergencia():
     emergencia = Emergencia()
     emergencia.id = "1"
     emergencia.user_id = 1
+    # emergencia.contacto_id = 1
     db.session.add(emergencia)
     db.session.commit()
     print("Emergencia creada!")
@@ -270,6 +272,17 @@ def loadcodes():
     db.session.commit()
 
     print("Codigos Creado!")
+
+@manager.command
+def loadcontacto():
+    contacto = Contacto()
+    contacto.nombre = "papa"
+    contacto.phone = "+5691234567"
+    contacto.emergenci_id = 1
+    db.session.add(contacto)
+    db.session.commit()
+
+    print("Contacto creado!")
 
 @manager.command
 def loadadmin():
