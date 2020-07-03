@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const Login = props => {
     const { store, actions } = useContext(Context)
     const handleSubmit = e => {
-        actions.login(e, props.history, store.role, store.role == 4 ? 'profile' : 'profile/professional')
+        actions.login(e, props.history, store.role, store.role === 4 ? 'profile' : 'profile/professional')
     }
 
     return (

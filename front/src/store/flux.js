@@ -11,6 +11,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             empresa: null,
             name: null,
             lastname: null,
+            phone: null,
             avatar: null,
             rolename: null,
             clients: null,
@@ -40,10 +41,10 @@ const getState = ({ getStore, getActions, setStore }) => {
                     })
                 }
             },
-            login: (e, history, rolename, re_route) => {
+            login: (e, history, re_route) => {
                 e.preventDefault()
                 const store = getStore();
-                fetch(store.path + '/login/' + rolename, {
+                fetch(store.path + '/login/' , {
                     method: 'POST',
                     body: JSON.stringify({
                         email: store.email,
@@ -66,7 +67,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                                 email: null,
                                 password: null,
                                 error: null,
-                                role: null
                             })
                             sessionStorage.setItem('currentUser', JSON.stringify(data))
                             sessionStorage.setItem('isAuthenticated', true)
@@ -156,7 +156,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     })
                     return;
                 }
-                if (!store.avatar || !store.empresa || !store.name || !store.lastname || !store.email) {
+                if (!store.email) {
                     setStore({
                         error: "Debe completar todos los campos"
                     })
@@ -164,13 +164,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
 
                 let formData = new FormData()
-                formData.append('empresa', store.empresa)
-                formData.append('rutEmpresa', store.rutEmpresa)
-                formData.append('name', store.name)
-                formData.append('lastname', store.lastname)
                 formData.append('email', store.email)
                 formData.append('password', store.password)
-                formData.append('avatar', store.avatar)
 
                 fetch(store.path + '/register/client', {
                     method: 'POST',
@@ -188,9 +183,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                                 isAuthenticated: true,
                                 email: null,
                                 password: null,
-                                photo: null,
-                                error: null,
-                                rolename: null
+                                error: null
                             })
                             sessionStorage.setItem('currentUser', JSON.stringify(data))
                             sessionStorage.setItem('isAuthenticated', true)
@@ -198,19 +191,24 @@ const getState = ({ getStore, getActions, setStore }) => {
                         }
                     })
             },
+
             logout: (history) => {
                 setStore({
                     currentUser: null,
                     isAuthenticated: false,
+                    email: null,
+                    password: null,
+                    errors: null
                 });
                 sessionStorage.removeItem('currentUser');
                 sessionStorage.removeItem('isAuthenticated');
                 history.push('/')
             },
-            createPlan: (e, client_id, client_mail, trainer_mail, nutritionist_mail, history) => {
+
+            createPlan: (e, client_id, client_mail, nutritionist_mail, history) => {
                 e.preventDefault()
                 const store = getStore();
-                fetch(store.path + '/client/plan/' + client_id + '/' + client_mail + '/' + trainer_mail + '/' + nutritionist_mail, {
+                fetch(store.path + '/client/plan/' + client_id + '/' + client_mail + '/' + nutritionist_mail, {
                     method: 'POST',
                     body: JSON.stringify({
                         client_id: store.currentUser.user.client_id,
@@ -236,6 +234,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                         }
                     })
             },
+
             editEmpresaProfile: (e, rolename, id) => {
                 e.preventDefault();
                 const store = getStore();
@@ -263,6 +262,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                         }
                     })
             },
+
             editAvatar: (e, rolename, id) => {
                 e.preventDefault();
                 const store = getStore();
@@ -287,6 +287,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                         }
                     })
             },
+
             getConfirmation: () => {
                 const store = getStore()
                 const data = {
@@ -313,18 +314,18 @@ const getState = ({ getStore, getActions, setStore }) => {
                         }
                     })
             },
-            getPasswordChange: (token, history,rolename) => {
+
+            getPasswordChange: (e, token, history) => {
+                e.preventDefault();
                 const store = getStore()
                 const data = {
                     password: store.password
                 }
                 if(store.password !== store.confirmedPassword){
-                   
                         alert("Contraseñas no son iguales")
-                    
                     return;
                 }
-                fetch(store.path + '/reset_password/' + rolename +'/'+ token, {
+                fetch(store.path + '/reset_password/' + token, {
                     method: 'POST',
                     body: JSON.stringify(data),
                     headers: {
@@ -338,10 +339,12 @@ const getState = ({ getStore, getActions, setStore }) => {
                         setStore({
                             email: null,
                             password:null,
-                            confirmedPassword:null
+                            confirmedPassword:null,
+                            error: null
                         })
                     })
             },
+
             contactUs:e => {                
                 e.preventDefault();
                 const store = getStore();
@@ -349,7 +352,9 @@ const getState = ({ getStore, getActions, setStore }) => {
                     method: 'POST',
                     body: JSON.stringify({
                         name: store.name,
+                        lastname: store.lastname,
                         email: store.email,
+                        empresa: store.empresa,
                         message : store.comment
                     }),
                     headers:{
@@ -365,6 +370,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     }else{
                         setStore({
                             name: null,
+                            lastname: null,
                             email:null,
                             empresa:null,
                             message:null,

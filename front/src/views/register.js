@@ -1,10 +1,71 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Context } from '../store/appContext';
+import { Link } from 'react-router-dom';
 
 const Register = props => {
+    const { store, actions } = useContext(Context);
+
     return (
         <div className="registeiner">
-            <h1>Register</h1>
-            <p>Aqui viene debe ir un formulario de ingreso en donde se necesita un email y password para ingresar</p>
+            <div className="loginsteiner">
+
+                <div id="container-login" className="card col-md-6 col-xs-12 offset-md-4 my-3 font2">
+                    <div className="my-3 mr-5 font2">
+                        {
+                            store.error &&
+                            <>
+                                <div className="alert alert-danger" role="alert">
+                                    Las contraseñas no coinciden
+                        </div>
+                            </>
+                        }
+                        <h1>Iniciar sesión</h1>
+
+                        <form onSubmit={e => actions.register_client(e, props.history)}>
+                            <div className="form-group">
+                                <label for="exampleInputEmail1">Correo electronico</label>
+                                <input
+                                    autoFocus
+                                    type="email"
+                                    className="form-control"
+                                    id="exampleInputEmail1"
+                                    placeholder="Escriba su email"
+                                    name='email'
+                                    onChange={actions.handleChange}
+                                    value={store.email}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label for="exampleInputPassword1">Contraseña</label>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    id="exampleInputPassword1"
+                                    placeholder="Escriba su contraseña "
+                                    name='password'
+                                    onChange={actions.handleChange}
+
+                                />
+                            </div>
+
+                            <br />
+                            <br />
+                            <button
+                                type="submit"
+                                className="btn btn-info btn-block my-3">
+                                Login
+                        </button>
+                        </form>
+
+                        <Link
+                            to='/request_password'>
+                            <small>Olvidé mi contraseña</small>
+                        </Link>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
     );
 }
