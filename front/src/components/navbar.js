@@ -38,7 +38,7 @@ const Navbar = props => {
 
                     {
                         !!store.currentUser ||
-                        store.rolename != '' ||
+                        store.rolename !== '' ||
                         store.rolename != null
                         &&
                         <>
