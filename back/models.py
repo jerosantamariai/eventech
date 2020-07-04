@@ -63,8 +63,13 @@ class Emergencia (db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship("User", back_populates="emergencia")
     contactos = db.relationship("Contacto", backref="emergenci", cascade="all, delete")
+    medicamentos = db.relationship("Medicamentos", backref="emergenci", cascade="all, delete")
     
     def serialize(self):
+        contactos= []
+        contactos = list(map(lambda contact: contact.serialize(), self.contactos)),
+        medicamentos= []
+        medicamentos = list(map(lambda medicamento: medicamento.serialize(), self.medicamentos)),
         return {
             "id": self.id,
             "gruposangre": self.gruposangre,
@@ -72,8 +77,10 @@ class Emergencia (db.Model):
             "enfermedadbase": self.enfermedadbase,
             "clinica": self.clinica,
             "medicamentos": self.medicamentos,
+            "contactos": contactos,
+            "medicamentos": medicamentos,
         }
-        
+
 class Evento (db.Model):
     __tablename__ = 'evento'
     id = db.Column(db.Integer, primary_key=True)
@@ -145,20 +152,21 @@ class Contacto (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(100), nullable=True)
     phone = db.Column(db.String(100), nullable=True)
-    emergenci_id = db.Column(db.Integer, db.ForeignKey("emergencia.id"))
+    emergencia_id = db.Column(db.Integer, db.ForeignKey("emergencia.id"))
 
     def serialize(self):
         return {
             "id": self.id,
             "nombre": self.nombre,
             "phone": self.phone,
-            "emergencia": self.emergencia.serialize(),
         }
 
 class Medicamentos (db.Model):
     __tablename__ = 'medicamentos'
     id = db.Column(db.Integer, primary_key=True)
     remedio = db.Column(db.String(100), nullable=True)
+    emergencia_id = db.Column(db.Integer, db.ForeignKey("emergencia.id"))
+
     def serialize(self):
         return {
             "id": self.id,

@@ -9,5 +9,6 @@ python app.py loadcodes
 python app.py loadcategories
 python app.py loadtickets
 python app.py loademergencia
+python app.py loadmedicamentos
 python app.py loadadmin
 python app.py runserver
