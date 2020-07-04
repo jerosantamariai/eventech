@@ -3,7 +3,7 @@ from flask import Flask, jsonify, request, render_template, send_from_directory
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from flask_bcrypt import Bcrypt
-from models import db, Roles, User, Ticket, Emergencia, Evento, Codigo, Categoria, Contacto
+from models import db, Roles, User, Ticket, Emergencia, Evento, Codigo, Categoria, Contacto, Medicamentos
 from functions import allowed_file
 from flask_cors import CORS
 from flask_mail import Mail, Message
@@ -260,6 +260,7 @@ def loademergencia():
     # emergencia.contacto_id = 1
     db.session.add(emergencia)
     db.session.commit()
+    
     print("Emergencia creada!")
 
 @manager.command
@@ -278,11 +279,28 @@ def loadcontacto():
     contacto = Contacto()
     contacto.nombre = "papa"
     contacto.phone = "+5691234567"
-    contacto.emergenci_id = 1
+    contacto.emergencia_id = 1
+    db.session.add(contacto)
+    db.session.commit()
+
+    contacto = Contacto()
+    contacto.nombre = "mama"
+    contacto.phone = "+5691234567"
+    contacto.emergencia_id = 1
     db.session.add(contacto)
     db.session.commit()
 
     print("Contacto creado!")
+
+@manager.command
+def loadmedicamentos():
+    medicamentos = Medicamentos()
+    medicamentos.remedio = "Aspirina"
+    medicamentos.emergencia_id = 1
+    db.session.add(medicamentos)
+    db.session.commit()
+
+    print("Medicamento creado!")
 
 @manager.command
 def loadadmin():
@@ -290,14 +308,6 @@ def loadadmin():
     user.email = "admin@eventech.cl"
     user.password = bcrypt.generate_password_hash("123456")        #Its obviously the first change that I make into my webpage is to change this password of my account
     user.role_id = "1"
-    user.evento = "1"
-    db.session.add(user)
-    db.session.commit()
-
-    user = User()
-    user.email = "admin2@eventech.cl"
-    user.password = bcrypt.generate_password_hash("123456")        #Its obviously the first change that I make into my webpage is to change this password of my account
-    user.role_id = "2"
     user.evento = "1"
     db.session.add(user)
     db.session.commit()
