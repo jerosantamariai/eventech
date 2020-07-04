@@ -19,7 +19,7 @@ const Register = props => {
                         </div>
                             </>
                         }
-                        <h1>Iniciar sesión</h1>
+                        <h1>Regístrate</h1>
 
                         <form onSubmit={e => actions.register_client(e, props.history)}>
                             <div className="form-group">
@@ -53,14 +53,10 @@ const Register = props => {
                             <button
                                 type="submit"
                                 className="btn btn-info btn-block my-3">
-                                Login
+                                Crear nuevo cliente
                         </button>
                         </form>
 
-                        <Link
-                            to='/request_password'>
-                            <small>Olvidé mi contraseña</small>
-                        </Link>
 
                     </div>
                 </div>
