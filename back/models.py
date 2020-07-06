@@ -66,9 +66,9 @@ class Emergencia (db.Model):
     medicamentos = db.relationship("Medicamentos", backref="emergenci", cascade="all, delete")
     
     def serialize(self):
-        contactos= []
+        # contactos= []
         contactos = list(map(lambda contact: contact.serialize(), self.contactos)),
-        medicamentos= []
+        # medicamentos= []
         medicamentos = list(map(lambda medicamento: medicamento.serialize(), self.medicamentos)),
         return {
             "id": self.id,
